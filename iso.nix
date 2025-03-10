@@ -58,7 +58,7 @@
         nixos-generate-config --root /mnt
 
         echo "Copying premade configuration"
-        cp -r /etc/nixos/ /mnt/nixos/
+        cp -r /etc/nixos/. /mnt/etc/nixos/
 
         echo "Installing NixOS..."
         nixos-install --no-root-passwd
