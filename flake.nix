@@ -2,11 +2,10 @@
   description = "Good Practice NixOS";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    #disko.url = "github:nix-community/disko";
+    disko.url = "github:nix-community/disko";
   };
 
-  #outputs = { self, nixpkgs, disko }: {
-  outputs = { self, nixpkgs }: {
+  outputs = { self, nixpkgs, disko }: {
     GoodPracticeNixosConfigurations = {
       iso = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -14,8 +13,7 @@
           ({ pkgs, modulesPath, ... }: {
             imports = [
               (modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix")
-              #disko.nixosModules.disko
-              #./nixos
+              disko.nixosModules.disko
             ];
             isoImage.squashfsCompression = "gzip -Xcompression-level 1";
 
