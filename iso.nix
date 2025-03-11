@@ -52,16 +52,24 @@
         echo "Current PATH: $PATH"
 
         echo "Running Disko..."
-        ${pkgs.disko}/bin/disko --mode disko /etc/nixos/disko.nix
+        ${pkgs.disko}/bin/disko --mode disko /etc/premade-configuration/disko.nix
 
         echo "Generating NixOS configuration..."
         nixos-generate-config --root /mnt
 
         echo "Copying premade configuration"
-        cp -r /etc/nixos/. /mnt/etc/nixos/
+        HWCONF_PATH=$(find /etc/premade-configuration -type f -name "hardware-configuration.nix")
+        if [[ -f "$HWCONF_PATH" ]]; then
+            echo "Saving generated /mnt/etc/nixos/hardware-configuration.nix at $HWCONF_PATH"
+            cp /mnt/etc/nixos/hardware-configuration.nix "$HWCONF_PATH"
+        else
+            echo "No hardware-configuration.nix file found. Be sure to know what you are doing."
+        fi
+        rm -rf /mnt/etc/nixos
+        cp -r /etc/premade-configuration /mnt/etc/nixos
 
         echo "Installing NixOS..."
-        nixos-install --no-root-passwd
+        cd /mnt/etc/nixos && nixos-install --no-root-passwd --flake ./#nixos
 
         echo "Installation Complete. Rebooting..."
         date

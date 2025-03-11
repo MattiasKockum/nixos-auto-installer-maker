@@ -18,8 +18,8 @@
             isoImage.squashfsCompression = "gzip -Xcompression-level 1";
 
             system.activationScripts.copy-nixos-files.text = ''
-              mkdir -p /etc/nixos
-              cp -r ${./nixos}/* /etc/nixos/
+              mkdir -p /etc/premade-configuration
+              cp -r ${./nixos}/* /etc/premade-configuration/
             '';
           })
           ./iso.nix

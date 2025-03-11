@@ -5,7 +5,8 @@ OVMF_VARS = $(shell find /nix/store -name "OVMF_VARS.fd" | head -n 1)
 ISO_FILE = $(shell find result/iso -name "nixos-*.iso" | head -n 1)
 
 iso:
-	nix flake update
+	cd nixos && nix flake update --commit-lock-file
+	git add .
 	nix build .#GoodPracticeNixosConfigurations.iso.config.system.build.isoImage
 
 disk:
