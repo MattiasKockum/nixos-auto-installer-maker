@@ -6,7 +6,7 @@
   };
 
   outputs = { self, nixpkgs, disko }: {
-    GoodPracticeNixosConfigurations = {
+    AutoInstallNixOS = {
       iso = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [

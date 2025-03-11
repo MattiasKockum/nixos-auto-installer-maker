@@ -1,13 +1,12 @@
 .PHONY: iso disk run
 
 OVMF_CODE = $(shell find /nix/store -name "OVMF_CODE.fd" | head -n 1)
-OVMF_VARS = $(shell find /nix/store -name "OVMF_VARS.fd" | head -n 1)
 ISO_FILE = $(shell find result/iso -name "nixos-*.iso" | head -n 1)
 
 iso:
 	cd nixos && nix flake update --commit-lock-file
 	git add .
-	nix build .#GoodPracticeNixosConfigurations.iso.config.system.build.isoImage
+	nix build .#AutoInstallNixOS.iso.config.system.build.isoImage
 
 disk:
 	qemu-img create -f qcow2 nixos.qcow2 32G
