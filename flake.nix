@@ -1,5 +1,5 @@
 {
-  description = "Good Practice NixOS";
+  description = "NixOS Auto installer maker";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     disko.url = "github:nix-community/disko";
