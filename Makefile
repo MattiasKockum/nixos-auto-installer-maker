@@ -4,9 +4,7 @@ OVMF_CODE = $(shell find /nix/store -name "OVMF_CODE.fd" | head -n 1)
 ISO_FILE = $(shell find result/iso -name "nixos-*.iso" | head -n 1)
 
 iso:
-	cd nixos && nix flake update --commit-lock-file
-	git add .
-	nix build .#AutoInstallNixOS.iso.config.system.build.isoImage
+	nix run
 
 disk:
 	qemu-img create -f qcow2 nixos.qcow2 32G
