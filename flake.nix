@@ -10,8 +10,8 @@
   let
     system = "x86_64-linux";
     pkgs   = import nixpkgs { inherit system; };
-  in {
-    nixosConfigurations.autoInstallerFlakeSerial = nixpkgs.lib.nixosSystem {
+
+    mkInstaller = name: extraModules: nixpkgs.lib.nixosSystem {
       inherit system;
       modules = [
         ({ ... }: {
@@ -25,31 +25,21 @@
             cp -r ${configPath}/* /etc/premade-configuration/
           '';
         })
+      ] ++ extraModules;
+    };
+
+  in {
+    nixosConfigurations.autoInstallerFlakeSerial =
+      mkInstaller "serial" [
         ./iso/general-config.nix
         ./iso/serial-config.nix
         ./iso/auto-install-flake-service.nix
       ];
-    };
 
-    nixosConfigurations.autoInstallerFlakeVGA = nixpkgs.lib.nixosSystem {
-      inherit system;
-      modules = [
-        ({ ... }: {
-          imports = [
-            "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
-            disko.nixosModules.disko
-          ];
-          isoImage.squashfsCompression = "gzip -Xcompression-level 1";
-          system.activationScripts.copy-nixos-files.text = ''
-            mkdir -p /etc/premade-configuration
-            cp -r ${configPath}/* /etc/premade-configuration/
-          '';
-        })
+    nixosConfigurations.autoInstallerFlakeVGA =
+      mkInstaller "vga" [
         ./iso/general-config.nix
         ./iso/auto-install-flake-service.nix
       ];
-    };
-
   };
 }
-
