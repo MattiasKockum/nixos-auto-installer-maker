@@ -1,31 +1,5 @@
 { pkgs, ... }:
 {
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
-  environment.systemPackages = with pkgs; [
-    disko
-    neovim
-    nixos-install-tools
-  ];
-
-  # Ensure the kernel and bootloader support serial output
-  boot.kernelParams = [ "console=ttyS0,115200n8" ];
-
-  boot.loader.grub.enable = false;
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  systemd.services.serial-getty = {
-    enable = true;
-    description = "Serial Getty on ttyS0";
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      ExecStart = "@${pkgs.systemd}/bin/agetty --autologin root --noclear ttyS0 115200 linux";
-      Restart = "always";
-      Type = "idle";
-    };
-  };
-
   systemd.services.auto-install = {
     enable = true;
     description = "Automatic NixOS Installation using Disko";
