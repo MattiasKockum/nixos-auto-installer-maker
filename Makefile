@@ -4,7 +4,8 @@ OVMF_CODE = $(shell find /nix/store -name "OVMF_CODE.fd" | head -n 1)
 ISO_FILE = $(shell find result/iso -name "nixos-*.iso" | head -n 1)
 
 iso:
-	nix build .#nixosConfigurations.autoInstallerFlakeVGA.config.system.build.isoImage
+	#nix build .#nixosConfigurations.autoInstallerFlakeVGA.config.system.build.isoImage
+	nix build github:MattiasKockum/nixos-auto-installer-maker#nixosConfigurations.autoInstallerFlakeVGA.config.system.build.isoImage --override-input configFlake "github:MattiasKockum/nixos-auto-installer-maker?dir=exemples/basic_vm_config"
 
 disk:
 	qemu-img create -f qcow2 nixos.qcow2 32G
